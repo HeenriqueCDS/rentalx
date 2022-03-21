@@ -1,10 +1,11 @@
-import express, { Request, Response } from "express"
-
+/* eslint-disable prettier/prettier */
+import express from "express"
+import { router } from "./routes"
 
 const app = express()
 
-app.get('/', (req: Request, res: Response) => {
-    return res.status(200).json({message: "Hello world!"})
-})
+app.use(express.json())
+
+app.use(router)
 
 app.listen(3333, () => console.log("Server is now online!"))

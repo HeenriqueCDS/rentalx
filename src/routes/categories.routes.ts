@@ -16,6 +16,7 @@ categoriesRoutes.post("/", (req, res) => {
 
 
 categoriesRoutes.get("/", (req, res) => {
+    console.log("Reload ")
     return listCategoriesController.handle(req, res);
 })
 categoriesRoutes.post("/import", upload.single('file'), (req, res) => {

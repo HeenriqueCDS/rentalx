@@ -1,0 +1,14 @@
+
+{
+    "type": "postgres",
+    "port": 5432,
+    "host": "localhost",
+    "username": "postgres", 
+    "password": "1234",
+    "database": "rentalx", 
+    "entities": ["./src/modules/**/entities/*.ts"],
+    "migrations": ["./src/database/migrations/*.ts"],
+    "cli": {
+      "migrationsDir": "./src/database/migrations"
+    }
+  }

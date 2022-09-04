@@ -9,8 +9,8 @@
       "@modules/*": ["modules/*"],
       "@errors/*": ["errors/*"],
       "@middlewares/*": ["middlewares/*"],
-      "config/*": ["config/*"],
-      "shared/*": ["shared/*"],
+      "@config/*": ["config/*"],
+      "@shared/*": ["shared/*"],
       "@utils/*": ["utils/*"]
     },  
     "resolveJsonModule": true,                       

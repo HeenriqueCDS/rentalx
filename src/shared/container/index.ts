@@ -1,4 +1,5 @@
 import { container } from "tsyringe"
+import "reflect-metadata"
 
 import { ICategoriesRepository } from "@modules/cars/repositories/ICategoriesRepository"
 import { ISpecificationRepository } from "@modules/cars/repositories/ISpecificationsRepository"

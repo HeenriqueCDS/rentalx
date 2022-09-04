@@ -1,5 +1,5 @@
 Arguments: 
-  /home/josesantos/.nvm/versions/node/v16.16.0/bin/node /home/josesantos/.nvm/versions/node/v16.16.0/bin/yarn add tsconfigs-paths -D
+  /home/josesantos/.nvm/versions/node/v16.16.0/bin/node /home/josesantos/.nvm/versions/node/v16.16.0/bin/yarn add @types/ts-jest -D
 
 PATH: 
   /home/josesantos/.local/bin:/home/josesantos/.nvm/versions/node/v16.16.0/bin:/home/josesantos/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/tsconfigs-paths: Not found
+  Error: https://registry.yarnpkg.com/@types%2fts-jest: Not found
       at Request.params.callback [as _callback] (/home/josesantos/.nvm/versions/node/v16.16.0/lib/node_modules/yarn/lib/cli.js:66145:18)
       at Request.self.callback (/home/josesantos/.nvm/versions/node/v16.16.0/lib/node_modules/yarn/lib/cli.js:140890:22)
       at Request.emit (node:events:527:28)
@@ -33,8 +33,8 @@ npm manifest:
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-      "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-      "typeorm": "ts-node-dev ./node_modules/typeorm/cli",
+      "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
+      "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
       "test": "jest"
     },
     "dependencies": {
@@ -71,6 +71,7 @@ npm manifest:
       "jest": "^29.0.2",
       "ts-jest": "^28.0.8",
       "ts-node-dev": "^1.1.8",
+      "tsconfig-paths": "^4.1.0",
       "typescript": "^4.6.2"
     }
   }
@@ -4371,6 +4372,15 @@ Lockfile:
       "@types/json5" "^0.0.29"
       json5 "^1.0.1"
       minimist "^1.2.0"
+      strip-bom "^3.0.0"
+  
+  tsconfig-paths@^4.1.0:
+    version "4.1.0"
+    resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-4.1.0.tgz#f8ef7d467f08ae3a695335bf1ece088c5538d2c1"
+    integrity sha512-AHx4Euop/dXFC+Vx589alFba8QItjF+8hf8LtmuiCwHyI4rHXQtOOENaM8kvYf5fR0dRChy3wzWIZ9WbB7FWow==
+    dependencies:
+      json5 "^2.2.1"
+      minimist "^1.2.6"
       strip-bom "^3.0.0"
   
   tsconfig@^7.0.0:

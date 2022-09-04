@@ -2,12 +2,10 @@ import { Car } from "@modules/cars/infra/typeorm/entities/Car";
 import { ICarsRepository } from "../ICarsRepository";
 
 class CarsRepositoryInMemory implements ICarsRepository {
-    create(data: ICreateCarDTO): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
     cars: Car[] = [];
     
-    async ({
+    async create ({
         brand, 
         category_id, 
         daily_rate, 
@@ -15,7 +13,7 @@ class CarsRepositoryInMemory implements ICarsRepository {
         fine_amount, 
         license_plate, 
         name, 
-    }: ICreateCarDTO): Promise<void> {
+    }: ICreateCarDTO): Promise<Car> {
         const car = new Car()
 
         Object.assign(car, {
@@ -26,13 +24,17 @@ class CarsRepositoryInMemory implements ICarsRepository {
             fine_amount, 
             license_plate, 
             name, 
-        })
+        });
 
-        this.cars.push(car)
+        this.cars.push(car);
+
+        return car;
         
-        return;
     }
 
+    async findByLicensePlate(license_plate: string): Promise<Car> {
+        return this.cars.find((car) => car.license_plate === license_plate)
+    }
 }
 
 export { CarsRepositoryInMemory };

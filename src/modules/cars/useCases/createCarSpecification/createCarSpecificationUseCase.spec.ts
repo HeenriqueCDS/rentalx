@@ -37,11 +37,19 @@ describe("Create Car Specification", () => {
             description: "Carro de luxo",
             fine_amount: 100,
             license_plate: "ABC-1234"
-        })
+        });
 
-        const specifications_id = ["4321"]
+        const specification = await specificationsRepository.create({
+            name: "Rebaixado",
+            description: "Socado no chão",
+        });
 
-        await createCarSpecificationUseCase.execute({ car_id: car.id, specifications_id })
+        const specifications_id = [specification.id];
+
+        const specificationsCars = await createCarSpecificationUseCase.execute({ car_id: car.id, specifications_id });
+
+        expect(specificationsCars).toHaveProperty("specifications");
+        expect(specificationsCars.specifications.length).toBe(1);
     })
 
 })

@@ -1,4 +1,5 @@
 import { AppError } from "@errors/AppError";
+import { Rental } from "@modules/rentals/infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
 
 interface IRequest {
@@ -14,14 +15,16 @@ class CreateRentalUseCase {
     ) {}
 
 
-    async execute({ car_id, user_id, expected_return_date }: IRequest): Promise<void> {
+    async execute({ car_id, user_id, expected_return_date }: IRequest): Promise<Rental> {
         const isCarUnavailable = await this.rentalsRepository.findOpenRentalByCar(car_id)
         if (isCarUnavailable) {
             throw new AppError("This car is not available", 409)
         }
 
-        const user = await this.rentalsRepository.findOpenRentalByUser(user_id)
-        if (user) {
+        const userHasOpenRental = await this.rentalsRepository.findOpenRentalByUser(user_id)
+
+        console.log(userHasOpenRental)
+        if (userHasOpenRental) {
             throw new AppError("You can only do one rental at a time", 409)
         }
 
@@ -31,6 +34,14 @@ class CreateRentalUseCase {
         // if(!rentalLastsLongerThan24Hours) {
         //     throw new AppError("The minimal rental duration is 24 hours", 406)
         // }
+
+        const rental = await this.rentalsRepository.create({
+            user_id,
+            car_id,
+            expected_return_date
+        })
+
+        return rental
 
     }
 }

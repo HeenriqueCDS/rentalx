@@ -1,11 +1,8 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc"
-
 import { AppError } from "@errors/AppError";
 import { Rental } from "@modules/rentals/infra/typeorm/entities/Rental";
 import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
+import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 
-dayjs.extend(utc)
 
 interface IRequest {
     user_id: string;
@@ -17,6 +14,7 @@ interface IRequest {
 class CreateRentalUseCase {
     constructor(
         private rentalsRepository: IRentalsRepository,
+        private dateProvider: IDateProvider
     ) {}
 
 
@@ -33,10 +31,9 @@ class CreateRentalUseCase {
             throw new AppError("You can only do one rental at a time", 409)
         }
 
-        const dateNow = dayjs().utc().local().format()
-        const expectedReturnDateFormat = dayjs(expected_return_date).utc().local().format()
+        const now = this.dateProvider.dateNow()
 
-        const rentalDurationInHours = dayjs(expectedReturnDateFormat).diff(dateNow, "hours")
+        const rentalDurationInHours = this.dateProvider.compareInHours(now, expected_return_date)
     
         if(rentalDurationInHours < minimalRentalDurationInHours) {
             throw new AppError("The minimal rental duration is 24 hours")

@@ -1,10 +1,14 @@
+import dayjs from "dayjs"
+
 import { AppError } from "@errors/AppError"
 import { RentalsRepositoryInMemory } from "@modules/rentals/repositories/in-memory/RentalsRepositoryInMemory"
 import { CreateRentalUseCase } from "./CreateRentalUseCase"
 let rentalsRepository: RentalsRepositoryInMemory
 let createRentalUseCase: CreateRentalUseCase
 
+
 describe("Create Rental", () => {
+    const expected_return_date = dayjs().add(1, "day").toDate()
     beforeEach(() => {
         rentalsRepository = new RentalsRepositoryInMemory()
         createRentalUseCase = new CreateRentalUseCase(rentalsRepository)
@@ -14,10 +18,8 @@ describe("Create Rental", () => {
         const rental = await createRentalUseCase.execute({
             user_id: "12345",
             car_id: "6789",
-            expected_return_date: new Date()
+            expected_return_date
         })
-
-        console.log(rental)
 
         expect(rental).toHaveProperty("id")
         expect(rental).toHaveProperty("start_date")
@@ -28,13 +30,13 @@ describe("Create Rental", () => {
             await createRentalUseCase.execute({
                 user_id: "12345",
                 car_id: "6789",
-                expected_return_date: new Date()
+                expected_return_date
             })
 
             await createRentalUseCase.execute({
                 user_id: "12345",
                 car_id: "6123",
-                expected_return_date: new Date()
+                expected_return_date
             })
         }).rejects.toBeInstanceOf(AppError)
     })
@@ -44,18 +46,24 @@ describe("Create Rental", () => {
             await createRentalUseCase.execute({
                 user_id: "12345",
                 car_id: "9999",
-                expected_return_date: new Date()
+                expected_return_date
             })
 
             await createRentalUseCase.execute({
                 user_id: "23456",
                 car_id: "9999",
-                expected_return_date: new Date()
+                expected_return_date
             })
         }).rejects.toBeInstanceOf(AppError)
     })
 
-    // it("Should not be able to create a rental with less", () => {
-
-    // })
+    it("Should not be able to create a new rental with duration less than 24 hours", async () => {
+        expect(async () => {
+            await createRentalUseCase.execute({
+                user_id: "12345",
+                car_id: "9999",
+                expected_return_date: new Date()
+            })
+        }).rejects.toBeInstanceOf(AppError)
+    })
 })
